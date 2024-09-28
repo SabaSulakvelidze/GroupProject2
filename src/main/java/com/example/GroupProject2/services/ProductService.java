@@ -17,6 +17,7 @@ public class ProductService {
     @PostConstruct
     public void init(){
         products = new HashMap<>();
+        //TODO needs to add first products
     }
 
     public ProductModel addProduct(ProductRequest productRequest){

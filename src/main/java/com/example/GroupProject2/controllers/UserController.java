@@ -1,19 +1,45 @@
 package com.example.GroupProject2.controllers;
 
 import com.example.GroupProject2.models.entity.UserModel;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.GroupProject2.models.request.UserRequest;
+import com.example.GroupProject2.services.UserServices;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/Users")
+@RequestMapping("/user")
 public class UserController {
 
-    @PostMapping
-    public UserModel addUser(@RequestBody UserModel userModel){
+    @Autowired
+    UserServices userServices;
 
-        return userModel;
+    @PostMapping
+    public UserModel addUser(@RequestBody UserRequest userRequest){
+        return userServices.addUser(userRequest);
+    }
+
+    @GetMapping
+    public List<UserModel> getAllUsers(){
+        return new ArrayList<>(userServices.getAllUsers());
+    }
+
+    @GetMapping("/{id}")
+    public UserModel getSingleUser(@PathVariable Integer id){
+        return userServices.getSingleUser(id);
+    }
+
+    @PutMapping("/{id}")
+    public UserModel updateUser(@PathVariable Integer id,@RequestBody UserRequest userRequest){
+        return userServices.updateUser(id,userRequest);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Integer id){
+        userServices.deleteUser(id);
     }
 
 }

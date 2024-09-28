@@ -5,9 +5,7 @@ import com.example.GroupProject2.models.request.UserRequest;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServices {
@@ -30,8 +28,8 @@ public class UserServices {
         return userModel;
     }
 
-    public Collection<UserModel> getAllUsers(){
-        return userModelMap.values();
+    public List<UserModel> getAllUsers(){
+        return new ArrayList<>(userModelMap.values());
     }
 
     public UserModel getSingleUser(Integer id){
@@ -41,8 +39,12 @@ public class UserServices {
     public UserModel updateUser(Integer id,UserRequest newUserRequest){
         UserModel userModel = userModelMap.get(id);
         if (userModel == null) throw new RuntimeException("User not found with ID: " + id);
-
+        //TODO needs implementation
         return userModel;
+    }
+
+    public void deleteUser(Integer id){
+        userModelMap.remove(id);
     }
 
 }
