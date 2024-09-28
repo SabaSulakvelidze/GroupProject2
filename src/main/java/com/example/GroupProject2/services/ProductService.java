@@ -5,9 +5,7 @@ import com.example.GroupProject2.models.request.ProductRequest;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -23,6 +21,9 @@ public class ProductService {
     public ProductModel addProduct(ProductRequest productRequest){
         ProductModel productModel = new ProductModel();
         productModel.setId(UUID.randomUUID());
+        productModel.setName(productRequest.getName());
+        productModel.setPrice(productRequest.getPrice());
+        productModel.setQuantity(productRequest.getQuantity());
         products.put(productModel.getId(),productModel);
         return productModel;
     }
@@ -31,8 +32,8 @@ public class ProductService {
         return new ProductModel(); //TODO
     }
 
-    public Collection<ProductModel> getAllProducts(){
-        return products.values();
+    public List<ProductModel> getAllProducts(){
+        return new ArrayList<>(products.values());
     }
 
     public ProductModel getSingleProduct(UUID id){

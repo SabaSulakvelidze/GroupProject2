@@ -19,7 +19,7 @@ public class ProductController {
 
     @GetMapping
     public List<ProductModel> getALlProducts(){
-        return new ArrayList<>(productService.getAllProducts());
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
