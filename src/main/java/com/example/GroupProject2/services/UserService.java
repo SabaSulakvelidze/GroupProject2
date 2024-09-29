@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class UserServices {
+public class UserService {
 
     private static Map<Integer, UserModel> userModelMap;
     private static int id;
@@ -41,6 +41,10 @@ public class UserServices {
         if (userModel == null) throw new RuntimeException("User not found with ID: " + id);
         //TODO needs implementation
         return userModel;
+    }
+
+    public UserModel getUserById(String id){
+        return userModelMap.get(id);
     }
 
     public void deleteUser(Integer id){

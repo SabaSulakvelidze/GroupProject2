@@ -15,9 +15,9 @@ import java.util.UUID;
 public class ProductController {
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
-    @GetMapping
+    @GetMapping("/all-products")
     public List<ProductModel> getALlProducts(){
         return productService.getAllProducts();
     }
@@ -27,18 +27,18 @@ public class ProductController {
         return productService.getSingleProduct(id);
     }
 
-    @PostMapping
-    public ProductModel addProduct(ProductRequest productRequest){
-        return productService.addProduct(productRequest);
+    @PostMapping("/add/{userId}")
+    public ProductModel addProduct(@PathVariable String userId,@RequestBody ProductRequest productRequest){
+        return productService.addProduct(userId, productRequest);
     }
 
-    @PutMapping("/{id}")
-    public ProductModel updateProduct(@PathVariable UUID id, @RequestBody ProductRequest productRequest){
-    return productService.updateProduct(id,productRequest);
+    @PutMapping("update/{userId}/{id}")
+    public ProductModel updateProduct(@PathVariable String userId, @PathVariable UUID id, @RequestBody ProductRequest productRequest){
+    return productService.updateProduct(userId, id, productRequest);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable UUID id){
-        productService.deleteProduct(id);
+    @DeleteMapping("/{userId}/{id}")
+    public void deleteProduct(@PathVariable String userId, @PathVariable UUID id){
+        productService.deleteProduct(userId, id);
     }
 }
