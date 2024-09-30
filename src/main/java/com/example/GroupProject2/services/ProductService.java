@@ -3,24 +3,34 @@ package com.example.GroupProject2.services;
 import com.example.GroupProject2.models.Enum.UserRole;
 import com.example.GroupProject2.models.entity.ProductModel;
 import com.example.GroupProject2.models.entity.UserModel;
+import com.example.GroupProject2.models.request.CartItemRequest;
 import com.example.GroupProject2.models.request.ProductRequest;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductService {
 
     @Autowired
-    UserServices userServices;
+    UserService userService;
 
     private static HashMap<UUID, ProductModel> products;
 
     @PostConstruct
     public void init() {
         products = new HashMap<>();
+        ProductModel productModel1 = new ProductModel(UUID.randomUUID(), "product1", 100.00, 1);
+        ProductModel productModel2 = new ProductModel(UUID.randomUUID(), "product2", 200.00, 2);
+        ProductModel productModel3 = new ProductModel(UUID.randomUUID(), "product3", 500.00, 5);
+        products.put(productModel1.getId(), productModel1);
+        products.put(productModel2.getId(), productModel2);
+        products.put(productModel3.getId(), productModel3);
         //TODO needs to add first products
 
     }
@@ -62,7 +72,7 @@ public class ProductService {
     }
 
     public void validateUser(Integer userId, UserRole userRole) {
-        UserModel user = userServices.getSingleUser(userId);
+        UserModel user = userService.getSingleUser(userId);
 
         if (user == null) throw new RuntimeException("User not found with ID: " + userId);
 

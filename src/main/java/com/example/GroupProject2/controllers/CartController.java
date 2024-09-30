@@ -4,7 +4,8 @@ import com.example.GroupProject2.models.Enum.UserRole;
 import com.example.GroupProject2.models.entity.CartItemModel;
 import com.example.GroupProject2.models.request.CartItemRequest;
 import com.example.GroupProject2.services.CartService;
-import jakarta.websocket.server.PathParam;
+import com.example.GroupProject2.services.ProductService;
+import com.example.GroupProject2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,8 @@ public class CartController {
     @PostMapping
     public CartItemModel addInCart(@RequestParam Integer userId, @RequestParam UserRole userRole,
                                    @RequestBody CartItemRequest cartItemRequest) {
+        cartService.reduceProductQuantity(cartItemRequest);
+        cartService.reduceBudget(cartItemRequest);
         return cartService.addInCart(userId, userRole, cartItemRequest);
     }
 
@@ -38,6 +41,7 @@ public class CartController {
     @DeleteMapping("/{itemId}")
     public void removeItemFromCart(@RequestParam Integer userId, @RequestParam UserRole userRole,
                                    @PathVariable UUID itemId) {
+        cartService.increaseBudgetAndQuantity(itemId);
         cartService.removeFromCart(userId, userRole, itemId);
     }
 

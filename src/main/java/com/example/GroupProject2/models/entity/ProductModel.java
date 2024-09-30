@@ -8,6 +8,16 @@ public class ProductModel {
     private Double price;
     private Integer quantity;
 
+    public ProductModel() {
+    }
+
+    public ProductModel(UUID id, String name, Double price, Integer quantity) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     public UUID getId() {
         return id;
     }
