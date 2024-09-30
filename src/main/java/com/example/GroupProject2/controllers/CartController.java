@@ -24,17 +24,20 @@ public class CartController {
     }
 
     @PostMapping
-    public CartItemModel addInCart(@RequestParam Integer userId, @RequestParam UserRole userRole, @RequestParam CartItemRequest cartItemRequest) {
+    public CartItemModel addInCart(@RequestParam Integer userId, @RequestParam UserRole userRole,
+                                   @RequestBody CartItemRequest cartItemRequest) {
         return cartService.addInCart(userId, userRole, cartItemRequest);
     }
 
     @PutMapping("/{itemId}")
-    public CartItemModel updateCartItem(@RequestParam Integer userId, @RequestParam UserRole userRole, @PathVariable UUID itemId, @RequestBody CartItemRequest cartItemRequest) {
+    public CartItemModel updateCartItem(@RequestParam Integer userId, @RequestParam UserRole userRole,
+                                        @PathVariable UUID itemId, @RequestBody CartItemRequest cartItemRequest) {
         return cartService.updateCartItem(userId, userRole, itemId, cartItemRequest);
     }
 
-    @DeleteMapping("/{ItemId}")
-    public void removeItemFromCart(@RequestParam Integer userId, @RequestParam UserRole userRole, @PathVariable UUID itemId) {
+    @DeleteMapping("/{itemId}")
+    public void removeItemFromCart(@RequestParam Integer userId, @RequestParam UserRole userRole,
+                                   @PathVariable UUID itemId) {
         cartService.removeFromCart(userId, userRole, itemId);
     }
 
