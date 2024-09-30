@@ -25,9 +25,9 @@ public class ProductService {
 
     }
 
-    public ProductModel addProduct(Integer userId, UserRole userRole,ProductRequest productRequest) {
+    public ProductModel addProduct(Integer userId, UserRole userRole, ProductRequest productRequest) {
 
-        validateUser(userId,userRole);
+        validateUser(userId, userRole);
 
         ProductModel productModel = new ProductModel();
         productModel.setId(UUID.randomUUID());
@@ -39,7 +39,7 @@ public class ProductService {
     }
 
     public ProductModel updateProduct(Integer userId, UserRole userRole, UUID id, ProductRequest newProductRequest) {
-        validateUser(userId,userRole);
+        validateUser(userId, userRole);
         ProductModel productModel = products.get(id);
         if (productModel == null) throw new RuntimeException("Product not found with ID: " + id);
         productModel.setName(newProductRequest.getName());
@@ -56,8 +56,8 @@ public class ProductService {
         return products.get(id);
     }
 
-    public void deleteProduct(Integer userId, UserRole userRole,UUID id) {
-        validateUser(userId,userRole);
+    public void deleteProduct(Integer userId, UserRole userRole, UUID id) {
+        validateUser(userId, userRole);
         products.remove(id);
     }
 
@@ -68,6 +68,7 @@ public class ProductService {
 
         if (!user.getUserRole().equals(userRole)) throw new RuntimeException("User role is incorrect");
 
-        if (!user.getUserRole().equals(UserRole.ADMIN)) throw new RuntimeException("User does not have permission, not admin");
+        if (!user.getUserRole().equals(UserRole.ADMIN))
+            throw new RuntimeException("User does not have permission, not admin");
     }
 }

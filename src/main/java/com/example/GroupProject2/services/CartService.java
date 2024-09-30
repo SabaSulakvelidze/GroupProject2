@@ -8,10 +8,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CartService {
@@ -26,7 +23,9 @@ public class CartService {
         cart = new HashMap<>();
     }
 
-    public CartItemModel addInCart(CartItemRequest cartItemRequest) {
+    public CartItemModel addInCart(Integer userId, UserRole userRole,CartItemRequest cartItemRequest) {
+        validateUser(userId,userRole);
+
         CartItemModel cartItemModel = new CartItemModel();
         cartItemModel.setId(UUID.randomUUID());
         cartItemModel.setProductId(cartItemRequest.getProductId());
@@ -36,13 +35,14 @@ public class CartService {
         return cartItemModel;
     }
 
-    public List<CartItemModel> getAllCartItems(UUID userId) {
+    public List<CartItemModel> getAllCartItems(Integer userId) {
         List<CartItemModel> cartItemsByUser = new ArrayList<>(cart.values());
-        cartItemsByUser.removeIf(item -> !item.getUserId().toString().equals(userId.toString()));
+        cartItemsByUser.removeIf(item -> !Objects.equals(item.getUserId(), userId));
         return cartItemsByUser;
     }
 
-    public CartItemModel updateCartItem(UUID itemId, CartItemRequest newCartItemRequest) {
+    public CartItemModel updateCartItem(Integer userId, UserRole userRole,UUID itemId, CartItemRequest newCartItemRequest) {
+        validateUser(userId,userRole);
         CartItemModel cartItemModel = cart.get(itemId);
         if (cartItemModel == null) throw new RuntimeException("Item in Cart not found with ID: " + itemId);
         cartItemModel.setProductId(newCartItemRequest.getProductId());
@@ -51,7 +51,8 @@ public class CartService {
         return cartItemModel;
     }
 
-    public void removeFromCart(UUID itemId) {
+    public void removeFromCart(Integer userId, UserRole userRole,UUID itemId) {
+        validateUser(userId,userRole);
         cart.remove(itemId);
     }
 
@@ -62,7 +63,7 @@ public class CartService {
 
         if (!user.getUserRole().equals(userRole)) throw new RuntimeException("User role is incorrect");
 
-        if (!user.getUserRole().equals(UserRole.ADMIN)) throw new RuntimeException("User does not have permission, not admin");
+        if (!user.getUserRole().equals(UserRole.USER)) throw new RuntimeException("User does not have permission, not admin");
     }
 
 }

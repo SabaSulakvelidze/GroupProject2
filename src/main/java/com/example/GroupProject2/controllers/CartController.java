@@ -1,5 +1,6 @@
 package com.example.GroupProject2.controllers;
 
+import com.example.GroupProject2.models.Enum.UserRole;
 import com.example.GroupProject2.models.entity.CartItemModel;
 import com.example.GroupProject2.models.request.CartItemRequest;
 import com.example.GroupProject2.services.CartService;
@@ -18,23 +19,23 @@ public class CartController {
     CartService cartService;
 
     @GetMapping("/{userId}")
-    public List<CartItemModel> getAllCartItemsByUser(@PathVariable UUID userId){//TODO filter for user in service class
+    public List<CartItemModel> getAllCartItemsByUser(@PathVariable Integer userId) {
         return cartService.getAllCartItems(userId);
     }
 
     @PostMapping
-    public CartItemModel addInCart(@RequestParam CartItemRequest cartItemRequest){
-        return cartService.addInCart(cartItemRequest);
+    public CartItemModel addInCart(@RequestParam Integer userId, @RequestParam UserRole userRole, @RequestParam CartItemRequest cartItemRequest) {
+        return cartService.addInCart(userId, userRole, cartItemRequest);
     }
 
     @PutMapping("/{itemId}")
-    public CartItemModel updateCartItem(@PathVariable UUID itemId,@RequestBody CartItemRequest cartItemRequest){
-        return cartService.updateCartItem(itemId,cartItemRequest);
+    public CartItemModel updateCartItem(@RequestParam Integer userId, @RequestParam UserRole userRole, @PathVariable UUID itemId, @RequestBody CartItemRequest cartItemRequest) {
+        return cartService.updateCartItem(userId, userRole, itemId, cartItemRequest);
     }
 
     @DeleteMapping("/{ItemId}")
-    public void removeItemFromCart(@PathVariable UUID itemId){
-        cartService.removeFromCart(itemId);
+    public void removeItemFromCart(@RequestParam Integer userId, @RequestParam UserRole userRole, @PathVariable UUID itemId) {
+        cartService.removeFromCart(userId, userRole, itemId);
     }
 
 }
