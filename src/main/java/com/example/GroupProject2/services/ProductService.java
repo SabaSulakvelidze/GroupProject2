@@ -14,85 +14,61 @@ import java.util.*;
 public class ProductService {
 
     @Autowired
-    private UserService userService;
+    UserServices userServices;
 
-    private static Map<UUID,ProductModel> products = new HashMap<UUID,ProductModel>();
+    private static HashMap<UUID, ProductModel> products;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         products = new HashMap<>();
-        //TODO needs to add first productsz
+        //TODO needs to add first products
+
     }
 
-    public ProductModel addProduct(String id, ProductRequest productRequest){
-        UserModel user = userService.getUserById(id);
+    public ProductModel addProduct(Integer userId, UserRole userRole, ProductRequest productRequest) {
 
-        if (user == null) {
-            throw new RuntimeException("User not found with ID: " + id);
-        }
-        if (!user.getUserRole().equals(UserRole.ADMIN)) {
-            throw new RuntimeException("Only admins can add products.");
-        }
+        validateUser(userId, userRole);
 
         ProductModel productModel = new ProductModel();
         productModel.setId(UUID.randomUUID());
         productModel.setName(productRequest.getName());
         productModel.setPrice(productRequest.getPrice());
         productModel.setQuantity(productRequest.getQuantity());
-        products.put(productModel.getId(),productModel);
+        products.put(productModel.getId(), productModel);
         return productModel;
     }
 
-    public ProductModel updateProduct(String userId, UUID id, ProductRequest updatedProduct){
-        UserModel user = userService.getUserById(userId);
-        //check admin roles
-        if(user == null) {
-            throw new RuntimeException("User not found with ID: " + userId);
-        }
-        if (!user.getUserRole().equals(UserRole.ADMIN)) {
-            throw new RuntimeException("Only admins can update products.");
-        }
-
-        //check if product exists with the given id
-        if(products == null) {
-            throw new RuntimeException("Products not found with this ID.");
-        }
-
-        ProductModel productModel = new ProductModel();
-        productModel.setName(updatedProduct.getName());
-        productModel.setPrice(updatedProduct.getPrice());
-        productModel.setQuantity(updatedProduct.getQuantity());
-
-        products.put(id, productModel);
+    public ProductModel updateProduct(Integer userId, UserRole userRole, UUID id, ProductRequest newProductRequest) {
+        validateUser(userId, userRole);
+        ProductModel productModel = products.get(id);
+        if (productModel == null) throw new RuntimeException("Product not found with ID: " + id);
+        productModel.setName(newProductRequest.getName());
+        productModel.setPrice(newProductRequest.getPrice());
+        productModel.setQuantity(newProductRequest.getQuantity());
         return productModel;
-
-
-
-         //TODO
     }
 
-    public List<ProductModel> getAllProducts(){
+    public List<ProductModel> getAllProducts() {
         return new ArrayList<>(products.values());
     }
 
-    public ProductModel getSingleProduct(UUID id){
+    public ProductModel getSingleProduct(UUID id) {
         return products.get(id);
     }
 
-    public void deleteProduct(String userId, UUID id){
-        UserModel user = userService.getUserById(userId);
-
-        if (user == null) {
-            throw new RuntimeException("User not found with ID: " + userId);
-        }
-        if(!user.getUserRole().equals(UserRole.ADMIN)){
-            throw new RuntimeException("Only admins can delete products.");
-        }
-
+    public void deleteProduct(Integer userId, UserRole userRole, UUID id) {
+        validateUser(userId, userRole);
         products.remove(id);
     }
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public void validateUser(Integer userId, UserRole userRole) {
+        UserModel user = userServices.getSingleUser(userId);
+
+        if (user == null) throw new RuntimeException("User not found with ID: " + userId);
+
+        if (!user.getUserRole().equals(userRole)) throw new RuntimeException("User role is incorrect");
+
+        if (!user.getUserRole().equals(UserRole.ADMIN))
+            throw new RuntimeException("User does not have permission, not admin");
     }
 }

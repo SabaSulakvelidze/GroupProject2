@@ -1,5 +1,6 @@
 package com.example.GroupProject2.controllers;
 
+import com.example.GroupProject2.models.Enum.UserRole;
 import com.example.GroupProject2.models.entity.ProductModel;
 import com.example.GroupProject2.models.request.ProductRequest;
 import com.example.GroupProject2.services.ProductService;
@@ -15,30 +16,30 @@ import java.util.UUID;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    ProductService productService;
 
-    @GetMapping("/all-products")
-    public List<ProductModel> getALlProducts(){
+    @GetMapping
+    public List<ProductModel> getALlProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public ProductModel getSingleProduct(@PathVariable UUID id){
+    public ProductModel getSingleProduct(@PathVariable UUID id) {
         return productService.getSingleProduct(id);
     }
 
-    @PostMapping("/add/{userId}")
-    public ProductModel addProduct(@PathVariable String userId,@RequestBody ProductRequest productRequest){
-        return productService.addProduct(userId, productRequest);
+    @PostMapping
+    public ProductModel addProduct(@RequestParam Integer userId, @RequestParam UserRole userRole, @RequestBody ProductRequest productRequest) {
+        return productService.addProduct(userId, userRole, productRequest);
     }
 
-    @PutMapping("update/{userId}/{id}")
-    public ProductModel updateProduct(@PathVariable String userId, @PathVariable UUID id, @RequestBody ProductRequest productRequest){
-    return productService.updateProduct(userId, id, productRequest);
+    @PutMapping("/{id}")
+    public ProductModel updateProduct(@RequestParam Integer userId, @RequestParam UserRole userRole, @PathVariable UUID id, @RequestBody ProductRequest productRequest) {
+        return productService.updateProduct(userId, userRole, id, productRequest);
     }
 
-    @DeleteMapping("/{userId}/{id}")
-    public void deleteProduct(@PathVariable String userId, @PathVariable UUID id){
-        productService.deleteProduct(userId, id);
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@RequestParam Integer userId, @RequestParam UserRole userRole, @PathVariable UUID id) {
+        productService.deleteProduct(userId, userRole, id);
     }
 }

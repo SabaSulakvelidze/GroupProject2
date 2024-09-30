@@ -5,8 +5,8 @@ import java.util.UUID;
 public class CartItemModel {
 
     private UUID id;
-    private UserModel user;
-    private ProductModel product;
+    private Integer userId;
+    private UUID productId;
     private Integer quantityInCart;
 
     public UUID getId() {
@@ -17,20 +17,20 @@ public class CartItemModel {
         this.id = id;
     }
 
-    public UserModel getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(UserModel user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public ProductModel getProduct() {
-        return product;
+    public UUID getProductId() {
+        return productId;
     }
 
-    public void setProduct(ProductModel product) {
-        this.product = product;
+    public void setProductId(UUID productId) {
+        this.productId = productId;
     }
 
     public Integer getQuantityInCart() {

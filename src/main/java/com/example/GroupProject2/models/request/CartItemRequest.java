@@ -3,25 +3,27 @@ package com.example.GroupProject2.models.request;
 import com.example.GroupProject2.models.entity.ProductModel;
 import com.example.GroupProject2.models.entity.UserModel;
 
+import java.util.UUID;
+
 public class CartItemRequest {
-    private UserModel user;
-    private ProductModel product;
+    private Integer userId;
+    private UUID productId;
     private Integer quantityInCart;
 
-    public UserModel getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(UserModel user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public ProductModel getProduct() {
-        return product;
+    public UUID getProductId() {
+        return productId;
     }
 
-    public void setProduct(ProductModel product) {
-        this.product = product;
+    public void setProductId(UUID productId) {
+        this.productId = productId;
     }
 
     public Integer getQuantityInCart() {
