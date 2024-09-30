@@ -2,20 +2,10 @@ package com.example.GroupProject2.models.request;
 
 import com.example.GroupProject2.models.Enum.UserRole;
 
-public class UserRequest {
+public class UserPostRequest {
     private String name;
 
     private UserRole userRole;
-
-    private Double budget;
-
-    public Double getBudget() {
-        return budget;
-    }
-
-    public void setBudget(Double budget) {
-        this.budget = budget;
-    }
 
     public String getName() {
         return name;

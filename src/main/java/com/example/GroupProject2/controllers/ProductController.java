@@ -1,5 +1,6 @@
 package com.example.GroupProject2.controllers;
 
+import com.example.GroupProject2.models.Enum.UserRole;
 import com.example.GroupProject2.models.entity.ProductModel;
 import com.example.GroupProject2.models.request.ProductRequest;
 import com.example.GroupProject2.services.ProductService;
@@ -18,27 +19,27 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping
-    public List<ProductModel> getALlProducts(){
+    public List<ProductModel> getALlProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public ProductModel getSingleProduct(@PathVariable UUID id){
+    public ProductModel getSingleProduct(@PathVariable UUID id) {
         return productService.getSingleProduct(id);
     }
 
     @PostMapping
-    public ProductModel addProduct(ProductRequest productRequest){
-        return productService.addProduct(productRequest);
+    public ProductModel addProduct(@RequestParam Integer userId, @RequestParam UserRole userRole, @RequestBody ProductRequest productRequest) {
+        return productService.addProduct(userId, userRole, productRequest);
     }
 
     @PutMapping("/{id}")
-    public ProductModel updateProduct(@PathVariable UUID id, @RequestBody ProductRequest productRequest){
-    return productService.updateProduct(id,productRequest);
+    public ProductModel updateProduct(@RequestParam Integer userId, @RequestParam UserRole userRole, @PathVariable UUID id, @RequestBody ProductRequest productRequest) {
+        return productService.updateProduct(userId, userRole, id, productRequest);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable UUID id){
-        productService.deleteProduct(id);
+    public void deleteProduct(@RequestParam Integer userId, @RequestParam UserRole userRole, @PathVariable UUID id) {
+        productService.deleteProduct(userId, userRole, id);
     }
 }

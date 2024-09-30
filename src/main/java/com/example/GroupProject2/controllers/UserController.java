@@ -1,14 +1,13 @@
 package com.example.GroupProject2.controllers;
 
 import com.example.GroupProject2.models.entity.UserModel;
-import com.example.GroupProject2.models.request.UserRequest;
+import com.example.GroupProject2.models.request.UserPostRequest;
+import com.example.GroupProject2.models.request.UserPutRequest;
 import com.example.GroupProject2.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -18,8 +17,8 @@ public class UserController {
     UserServices userServices;
 
     @PostMapping
-    public UserModel addUser(@RequestBody UserRequest userRequest){
-        return userServices.addUser(userRequest);
+    public UserModel addUser(@RequestBody UserPostRequest userPostRequest){
+        return userServices.addUser(userPostRequest);
     }
 
     @GetMapping
@@ -33,8 +32,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserModel updateUser(@PathVariable Integer id,@RequestBody UserRequest userRequest){
-        return userServices.updateUser(id,userRequest);
+    public UserModel updateUser(@PathVariable Integer id,@RequestBody UserPutRequest userPutRequest){
+        return userServices.updateUser(id, userPutRequest);
     }
 
     @DeleteMapping("/{id}")

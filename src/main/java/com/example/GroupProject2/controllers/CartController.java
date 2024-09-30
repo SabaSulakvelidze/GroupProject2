@@ -23,8 +23,8 @@ public class CartController {
     }
 
     @PostMapping
-    public CartItemModel addInCart(@RequestParam UUID userId, @RequestParam CartItemRequest cartItemRequest){
-        return cartService.addInCart(userId,cartItemRequest);
+    public CartItemModel addInCart(@RequestParam CartItemRequest cartItemRequest){
+        return cartService.addInCart(cartItemRequest);
     }
 
     @PutMapping("/{itemId}")
