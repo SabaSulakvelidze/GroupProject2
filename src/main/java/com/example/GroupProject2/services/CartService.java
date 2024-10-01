@@ -119,6 +119,8 @@ public class CartService {
         double totalCost = 0.00;
         for (CartItemModel cartItem : getAllCartItems(userId)) {
             ProductModel singleProduct = productService.getSingleProduct(cartItem.getProductId());
+            if (singleProduct.getQuantity() == 0)
+                throw new RuntimeException("There are not enough items in stock");
             if (singleProduct.getQuantity() < cartItem.getQuantityInCart())
                 throw new RuntimeException("Not enough items in stock, product id: " + cartItem.getProductId());
             totalCost += singleProduct.getPrice() * cartItem.getQuantityInCart();
