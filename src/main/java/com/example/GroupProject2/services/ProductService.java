@@ -62,10 +62,14 @@ public class ProductService {
     }
 
     public ProductModel getSingleProduct(Integer id) {
+        ProductModel productModel = products.get(id);
+        if (productModel == null) throw new RuntimeException("Product not found with ID: " + id);
+
         return products.get(id);
     }
 
     public void deleteProduct(Integer userId, UserRole userRole, Integer id) {
+
         validateUser(userId, userRole);
         products.remove(id);
     }
