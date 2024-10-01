@@ -1,13 +1,8 @@
 package com.example.GroupProject2.models.request;
 
-import com.example.GroupProject2.models.entity.ProductModel;
-import com.example.GroupProject2.models.entity.UserModel;
-
-import java.util.UUID;
-
 public class CartItemRequest {
     private Integer userId;
-    private UUID productId;
+    private Integer productId;
     private Integer quantityInCart;
 
     public Integer getUserId() {
@@ -18,11 +13,11 @@ public class CartItemRequest {
         this.userId = userId;
     }
 
-    public UUID getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(UUID productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
@@ -34,4 +29,3 @@ public class CartItemRequest {
         this.quantityInCart = quantityInCart;
     }
 }
-  //pushed dgsdfhgfgdh

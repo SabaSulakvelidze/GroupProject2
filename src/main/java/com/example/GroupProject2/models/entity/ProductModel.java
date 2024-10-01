@@ -1,28 +1,26 @@
 package com.example.GroupProject2.models.entity;
 
-import java.util.UUID;
-
 public class ProductModel {
-    private UUID id;
+    private Integer id;
     private String name;
     private Double price;
     private Integer quantity;
 
-    public ProductModel() {
-    }
-
-    public ProductModel(UUID id, String name, Double price, Integer quantity) {
+    public ProductModel(Integer id, String name, Double price, Integer quantity) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public UUID getId() {
+    public ProductModel() {
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

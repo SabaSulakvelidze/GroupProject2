@@ -7,9 +7,7 @@ import com.example.GroupProject2.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/product")
@@ -24,7 +22,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ProductModel getSingleProduct(@PathVariable UUID id) {
+    public ProductModel getSingleProduct(@PathVariable Integer id) {
         return productService.getSingleProduct(id);
     }
 
@@ -34,12 +32,12 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ProductModel updateProduct(@RequestParam Integer userId, @RequestParam UserRole userRole, @PathVariable UUID id, @RequestBody ProductRequest productRequest) {
+    public ProductModel updateProduct(@RequestParam Integer userId, @RequestParam UserRole userRole, @PathVariable Integer id, @RequestBody ProductRequest productRequest) {
         return productService.updateProduct(userId, userRole, id, productRequest);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@RequestParam Integer userId, @RequestParam UserRole userRole, @PathVariable UUID id) {
+    public void deleteProduct(@RequestParam Integer userId, @RequestParam UserRole userRole, @PathVariable Integer id) {
         productService.deleteProduct(userId, userRole, id);
     }
 }

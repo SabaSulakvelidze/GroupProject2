@@ -1,19 +1,17 @@
 package com.example.GroupProject2.models.entity;
 
-import java.util.UUID;
-
 public class CartItemModel {
 
-    private UUID id;
+    private Integer id;
     private Integer userId;
-    private UUID productId;
+    private Integer productId;
     private Integer quantityInCart;
 
-    public UUID getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -25,11 +23,11 @@ public class CartItemModel {
         this.userId = userId;
     }
 
-    public UUID getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(UUID productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 

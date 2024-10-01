@@ -20,7 +20,8 @@ public class CartService {
     @Autowired
     UserService userService;
 
-    private static HashMap<UUID, CartItemModel> cart;
+    private static HashMap<Integer, CartItemModel> cart;
+    int index = 0;
 
     @PostConstruct
     public void init() {
@@ -31,10 +32,11 @@ public class CartService {
         validateUser(userId, userRole);
 
         CartItemModel cartItemModel = new CartItemModel();
-        cartItemModel.setId(UUID.randomUUID());
+        cartItemModel.setId(index++);
         cartItemModel.setProductId(cartItemRequest.getProductId());
         cartItemModel.setUserId(cartItemRequest.getUserId());
         cartItemModel.setQuantityInCart(cartItemRequest.getQuantityInCart());
+
         cart.put(cartItemModel.getId(), cartItemModel);
         return cartItemModel;
     }
@@ -45,17 +47,19 @@ public class CartService {
         return cartItemsByUser;
     }
 
-    public CartItemModel updateCartItem(Integer userId, UserRole userRole, UUID itemId, CartItemRequest newCartItemRequest) {
+    public CartItemModel updateCartItem(Integer userId, UserRole userRole, Integer itemId, CartItemRequest newCartItemRequest) {
         validateUser(userId, userRole);
         CartItemModel cartItemModel = cart.get(itemId);
         if (cartItemModel == null) throw new RuntimeException("Item in Cart not found with ID: " + itemId);
+
         cartItemModel.setProductId(newCartItemRequest.getProductId());
         cartItemModel.setUserId(newCartItemRequest.getUserId());
         cartItemModel.setQuantityInCart(newCartItemRequest.getQuantityInCart());
+
         return cartItemModel;
     }
 
-    public void removeFromCart(Integer userId, UserRole userRole, UUID itemId) {
+    public void removeFromCart(Integer userId, UserRole userRole, Integer itemId) {
         validateUser(userId, userRole);
         cart.remove(itemId);
     }
@@ -71,7 +75,7 @@ public class CartService {
             throw new RuntimeException("User does not have permission, not admin");
     }
 
-    public void reduceBudget(CartItemRequest cartItemRequest) {
+   /* public void reduceBudget(CartItemRequest cartItemRequest) {
         UserModel userModel = userService.getSingleUser(cartItemRequest.getUserId());
         Double price = productService.getSingleProduct(cartItemRequest.getProductId()).getPrice();
         if (userModel.getBudget() < price * cartItemRequest.getQuantityInCart())
@@ -79,7 +83,7 @@ public class CartService {
         userModel.setBudget(userModel.getBudget() - price * cartItemRequest.getQuantityInCart());
     }
 
-    public void increaseBudgetAndQuantity(UUID itemId) {
+    public void increaseBudgetAndQuantity( itemId) {
         CartItemModel cartItemModel = cart.get(itemId);
         UserModel singleUser = userService.getSingleUser(cartItemModel.getUserId());
         ProductModel singleProduct = productService.getSingleProduct(cartItemModel.getProductId());
@@ -93,6 +97,45 @@ public class CartService {
         if (productModel.getQuantity() < cartItemRequest.getQuantityInCart())
             throw new RuntimeException("There are not enough items");
         productModel.setQuantity(productModel.getQuantity() - cartItemRequest.getQuantityInCart());
+    }*/
+
+    public void purchaseSingleProduct(Integer userId, UserRole userRole,Integer productId) {
+        validateUser(userId, userRole);
+
+        UserModel singleUser = userService.getSingleUser(userId);
+        ProductModel singleProduct = productService.getSingleProduct(productId);
+        if (singleProduct.getQuantity() == 0)
+            throw new RuntimeException("There are not enough items in stock");
+        if (singleUser.getBudget() < singleProduct.getPrice())
+            throw new RuntimeException("User does not have enough money");
+        singleProduct.setQuantity(singleProduct.getQuantity() - 1);
+        singleUser.setBudget(singleUser.getBudget() - singleProduct.getPrice());
     }
 
+    public void purchaseEverythingInCart(Integer userId, UserRole userRole) {
+        validateUser(userId, userRole);
+
+        UserModel singleUser = userService.getSingleUser(userId);
+        double totalCost = 0.00;
+        for (CartItemModel cartItem : getAllCartItems(userId)) {
+            ProductModel singleProduct = productService.getSingleProduct(cartItem.getProductId());
+            if (singleProduct.getQuantity() < cartItem.getQuantityInCart())
+                throw new RuntimeException("Not enough items in stock, product id: " + cartItem.getProductId());
+            totalCost += singleProduct.getPrice() * cartItem.getQuantityInCart();
+        }
+
+        if (singleUser.getBudget() < totalCost)
+            throw new RuntimeException("User does not have enough money");
+
+
+        singleUser.setBudget(singleUser.getBudget() - totalCost);
+        for (CartItemModel cartItem : getAllCartItems(userId)) {
+            ProductModel singleProduct = productService.getSingleProduct(cartItem.getProductId());
+            singleProduct.setQuantity(singleProduct.getQuantity() - cartItem.getQuantityInCart());
+        }
+
+        for (CartItemModel cartItem : getAllCartItems(userId)) {
+            cart.remove(cartItem.getId());
+        }
+    }
 }

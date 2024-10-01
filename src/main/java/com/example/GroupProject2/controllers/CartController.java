@@ -4,13 +4,10 @@ import com.example.GroupProject2.models.Enum.UserRole;
 import com.example.GroupProject2.models.entity.CartItemModel;
 import com.example.GroupProject2.models.request.CartItemRequest;
 import com.example.GroupProject2.services.CartService;
-import com.example.GroupProject2.services.ProductService;
-import com.example.GroupProject2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/cart")
@@ -27,22 +24,30 @@ public class CartController {
     @PostMapping
     public CartItemModel addInCart(@RequestParam Integer userId, @RequestParam UserRole userRole,
                                    @RequestBody CartItemRequest cartItemRequest) {
-        cartService.reduceProductQuantity(cartItemRequest);
-        cartService.reduceBudget(cartItemRequest);
         return cartService.addInCart(userId, userRole, cartItemRequest);
     }
 
     @PutMapping("/{itemId}")
     public CartItemModel updateCartItem(@RequestParam Integer userId, @RequestParam UserRole userRole,
-                                        @PathVariable UUID itemId, @RequestBody CartItemRequest cartItemRequest) {
+                                        @PathVariable Integer itemId, @RequestBody CartItemRequest cartItemRequest) {
         return cartService.updateCartItem(userId, userRole, itemId, cartItemRequest);
     }
 
     @DeleteMapping("/{itemId}")
     public void removeItemFromCart(@RequestParam Integer userId, @RequestParam UserRole userRole,
-                                   @PathVariable UUID itemId) {
-        cartService.increaseBudgetAndQuantity(itemId);
+                                   @PathVariable Integer itemId) {
         cartService.removeFromCart(userId, userRole, itemId);
+    }
+
+    @PostMapping("/purchaseSingle")
+    public void purchaseSingleItem(@RequestParam Integer userId, @RequestParam UserRole userRole,
+                                   @RequestParam Integer productId) {
+        cartService.purchaseSingleProduct(userId, userRole, productId);
+    }
+
+    @PostMapping("/purchaseAll")
+    public void purchaseEverythingInCart(@RequestParam Integer userId, @RequestParam UserRole userRole) {
+        cartService.purchaseEverythingInCart(userId, userRole);
     }
 
 }

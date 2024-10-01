@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ProductService {
@@ -20,14 +19,14 @@ public class ProductService {
     @Autowired
     UserService userService;
 
-    private static HashMap<UUID, ProductModel> products;
-
+    private static HashMap<Integer, ProductModel> products;
+    int index = 0;
     @PostConstruct
     public void init() {
         products = new HashMap<>();
-        ProductModel productModel1 = new ProductModel(UUID.randomUUID(), "product1", 100.00, 1);
-        ProductModel productModel2 = new ProductModel(UUID.randomUUID(), "product2", 200.00, 2);
-        ProductModel productModel3 = new ProductModel(UUID.randomUUID(), "product3", 500.00, 5);
+        ProductModel productModel1 = new ProductModel(index++, "product1", 100.00, 1);
+        ProductModel productModel2 = new ProductModel(index++, "product2", 200.00, 2);
+        ProductModel productModel3 = new ProductModel(index++, "product3", 500.00, 5);
         products.put(productModel1.getId(), productModel1);
         products.put(productModel2.getId(), productModel2);
         products.put(productModel3.getId(), productModel3);
@@ -40,7 +39,7 @@ public class ProductService {
         validateUser(userId, userRole);
 
         ProductModel productModel = new ProductModel();
-        productModel.setId(UUID.randomUUID());
+        productModel.setId(index++);
         productModel.setName(productRequest.getName());
         productModel.setPrice(productRequest.getPrice());
         productModel.setQuantity(productRequest.getQuantity());
@@ -48,7 +47,7 @@ public class ProductService {
         return productModel;
     }
 
-    public ProductModel updateProduct(Integer userId, UserRole userRole, UUID id, ProductRequest newProductRequest) {
+    public ProductModel updateProduct(Integer userId, UserRole userRole, Integer id, ProductRequest newProductRequest) {
         validateUser(userId, userRole);
         ProductModel productModel = products.get(id);
         if (productModel == null) throw new RuntimeException("Product not found with ID: " + id);
@@ -62,11 +61,11 @@ public class ProductService {
         return new ArrayList<>(products.values());
     }
 
-    public ProductModel getSingleProduct(UUID id) {
+    public ProductModel getSingleProduct(Integer id) {
         return products.get(id);
     }
 
-    public void deleteProduct(Integer userId, UserRole userRole, UUID id) {
+    public void deleteProduct(Integer userId, UserRole userRole, Integer id) {
         validateUser(userId, userRole);
         products.remove(id);
     }
