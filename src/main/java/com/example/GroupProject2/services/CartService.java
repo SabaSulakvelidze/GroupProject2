@@ -75,30 +75,6 @@ public class CartService {
             throw new RuntimeException("User does not have permission, not admin");
     }
 
-   /* public void reduceBudget(CartItemRequest cartItemRequest) {
-        UserModel userModel = userService.getSingleUser(cartItemRequest.getUserId());
-        Double price = productService.getSingleProduct(cartItemRequest.getProductId()).getPrice();
-        if (userModel.getBudget() < price * cartItemRequest.getQuantityInCart())
-            throw new RuntimeException("User does not have enough budget");
-        userModel.setBudget(userModel.getBudget() - price * cartItemRequest.getQuantityInCart());
-    }
-
-    public void increaseBudgetAndQuantity( itemId) {
-        CartItemModel cartItemModel = cart.get(itemId);
-        UserModel singleUser = userService.getSingleUser(cartItemModel.getUserId());
-        ProductModel singleProduct = productService.getSingleProduct(cartItemModel.getProductId());
-
-        singleUser.setBudget(singleUser.getBudget() + singleProduct.getPrice() * cartItemModel.getQuantityInCart());
-        singleProduct.setQuantity(singleProduct.getQuantity()+ cartItemModel.getQuantityInCart());
-    }
-
-    public void reduceProductQuantity(CartItemRequest cartItemRequest) {
-        ProductModel productModel = productService.getSingleProduct(cartItemRequest.getProductId());
-        if (productModel.getQuantity() < cartItemRequest.getQuantityInCart())
-            throw new RuntimeException("There are not enough items");
-        productModel.setQuantity(productModel.getQuantity() - cartItemRequest.getQuantityInCart());
-    }*/
-
     public void purchaseSingleProduct(Integer userId, UserRole userRole,Integer productId) {
         validateUser(userId, userRole);
 
